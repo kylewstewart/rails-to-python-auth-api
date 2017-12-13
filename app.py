@@ -1,21 +1,38 @@
-
 from flask import Flask, request, jsonify
 from http_method_override import HTTPMethodOverride
-
+from controllers import User
+from IPython import embed
 
 app = Flask(__name__)
 app.wsgi_app = HTTPMethodOverride(app.wsgi_app)
 
 
-@app.route('/api/v1/user', methods=['GET', 'POST'])
-def user():
-    if request.method == 'GET':
-        data = dict()
-        data['msg'] = "User#Index"
-        return jsonify(data)
-    elif request.method == 'POST':
-        req_data = request.get_json()
-        return jsonify(req_data)
+@app.route("/api/v1/user", methods=['GET', 'POST'])
+@app.route("/api/v1/user/<int:id>", methods=['GET', 'PUT', 'PATCH', 'DELETE'])
+def user_routes(**args):
+    method = request.method
+    data = request.get_json(silent=True)
+    id = args.get('user_id')
+    user = User(method, data, id)
+
+    if id is None:
+        if method == 'GET':
+            response = jsonify(user.index())
+        elif method == 'POST':
+            response = jsonify(user.create())
+        else:
+            response = ('', '500')
+    else:
+        if method == 'GET':
+            response = jsonify(user.show())
+        elif method == 'DELETE':
+            response = jsonify(user.destroy())
+        elif method == 'PUT' or method == 'PATCH':
+            response = jsonify(user.upate())
+        else:
+            response = ('', '500')
+
+    return response
 
 
 if __name__ == '__main__':
