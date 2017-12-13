@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from http_method_override import HTTPMethodOverride
-from controllers import User
+from controllers import user_contoller
 from IPython import embed
 
 app = Flask(__name__)
@@ -12,8 +12,8 @@ app.wsgi_app = HTTPMethodOverride(app.wsgi_app)
 def user_routes(**args):
     method = request.method
     data = request.get_json(silent=True)
-    id = args.get('user_id')
-    user = User(method, data, id)
+    id = args.get('id')
+    user = user_contoller.User(method, data, id)
 
     if id is None:
         if method == 'GET':
@@ -28,7 +28,7 @@ def user_routes(**args):
         elif method == 'DELETE':
             response = jsonify(user.destroy())
         elif method == 'PUT' or method == 'PATCH':
-            response = jsonify(user.upate())
+            response = jsonify(user.update())
         else:
             response = ('', '500')
 
