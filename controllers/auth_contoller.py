@@ -1,20 +1,20 @@
-class User():
+class Auth():
     def __init__(self, method, data, id):
         self.method = method
         self.data = data
         self.id = id
 
     def index(self):
-        return "User#Index"
+        return "Auth#Index"
 
     def create(self):
-        return "User#Create"
+        return "Auth#Create"
 
     def show(self):
-        return "User#Show"
+        return "Auth#Show"
 
     def update(self):
-        return "User#Update"
+        return "Auth#Update"
 
     def destroy(self):
-        return "User#Destroy"
+        return "Auth#Destroy"
