@@ -1,11 +1,10 @@
-from models import user_model
+from controllers.app_controller import AppController
 
 
-class User():
-    def __init__(self, method, data, id):
-        self.method = method
-        self.data = data
+class User(AppController):
+    def __init__(self, id, data):
         self.id = id
+        self.data = data
 
     def index(self):
         return "User#Index"

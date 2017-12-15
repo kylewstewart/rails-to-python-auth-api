@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from models.configs import db_configs
+from IPython import embed
 
 
 class AppModel():
@@ -14,4 +15,12 @@ class AppModel():
         return client[self.database]
 
     def username_print(self):
+        embed()
         print(self.username)
+
+    @classmethod
+    def create(cls, *args, **kwargs):
+        try:
+            return cls(*args, **kwargs)
+        except Exception as e:
+            return False

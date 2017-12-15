@@ -5,22 +5,13 @@ from models.app_model import AppModel
 
 class User(AppModel):
 
-    def __init__(self, **kwargs):
-        self.username = kwargs['username']
+    def __init__(self, username):
+        self.username = username
 
+    # create
 
-embed()
+    # read
 
-# structure = {
-#     'username': basestring,
-#     'password': basestring,
-#     'date_creation': datetime.datetime
-# }
-# required_fields = [
-#     'username',
-#     'password'
-# ]
-# default_values = {
-#     'date_creation': datetime.datetime.utcnow
-# }
-# use_dot_notation = True
+    # update
+
+    # DELETE

@@ -1,8 +1,10 @@
-class Auth():
-    def __init__(self, method, data, id):
-        self.method = method
-        self.data = data
+from controllers.app_controller import AppController
+
+
+class Auth(AppController):
+    def __init__(self, id, data):
         self.id = id
+        self.data = data
 
     def index(self):
         return "Auth#Index"
