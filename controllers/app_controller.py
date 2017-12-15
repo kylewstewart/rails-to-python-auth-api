@@ -1,5 +1,10 @@
-class AppController():
+"""
+AppController is the super Controller class.
+Allows Restful routes to be called from request.method in app.py.
+"""
 
+
+class AppController():
     def get(self):
         if self.id is None:
             return self.index()
