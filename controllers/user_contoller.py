@@ -1,3 +1,6 @@
+from models import user_model
+
+
 class User():
     def __init__(self, method, data, id):
         self.method = method

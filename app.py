@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from http_method_override import HTTPMethodOverride
 from controllers import user_contoller, auth_contoller
-from IPython import embed
 
 app = Flask(__name__)
 app.wsgi_app = HTTPMethodOverride(app.wsgi_app)
