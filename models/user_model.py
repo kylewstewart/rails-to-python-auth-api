@@ -1,17 +1,14 @@
-import datetime
-from IPython import embed
 from models.app_model import AppModel
 
 
 class User(AppModel):
 
-    def __init__(self, username):
+    collection = 'users'
+
+    def __init__(self, username, password):
         self.username = username
+        self.password = password
 
-    # create
-
-    # read
-
-    # update
-
-    # DELETE
+    def save(self):
+        id = self.get_id_number()
+        db = self.get_db

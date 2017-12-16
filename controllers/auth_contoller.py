@@ -1,7 +1,7 @@
 from controllers.app_controller import AppController
 
 
-class Auth(AppController):
+class AuthController(AppController):
     def __init__(self, id, data):
         self.id = id
         self.data = data

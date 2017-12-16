@@ -1,7 +1,7 @@
-from controllers import User
-from controllers import Auth
+from controllers import UserController
+from controllers import AuthController
 
 controllers = {
-    'user': User,
-    'auth': Auth
+    'user': UserController,
+    'auth': AuthController
 }

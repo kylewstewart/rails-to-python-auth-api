@@ -1,15 +1,21 @@
 from controllers.app_controller import AppController
+from models import User
+from IPython import embed
 
 
-class User(AppController):
+class UserController(AppController):
     def __init__(self, id, data):
         self.id = id
         self.data = data
 
     def index(self):
+        # users = User.all()
+        # embed()
         return "User#Index"
 
     def create(self):
+        user = User('test', 'password')
+        user.save()
         return "User#Create"
 
     def show(self):

@@ -5,22 +5,29 @@ from IPython import embed
 
 class AppModel():
 
+    HOST = db_configs['host']
+    PORT = db_configs['port']
+    DATABASE = db_configs['database']
+
+    @classmethod
+    def all(cls):
+        client = MongoClient(cls.HOST, cls.PORT)
+        db = client[cls.DATABASE]
+        collection = db.cls.collection
+        documents = []
+        for document in collection.find():
+            documents.append(document)
+        return documents
+
     def __init__(self):
         self.host = db_configs['host']
         self.port = db_configs['port']
         self.database = db_configs['database']
 
     def get_db(self):
-        client = MongoClient(self.host, self.port)
-        return client[self.database]
+        client = MongoClient(self.HOST, self.PORT)
+        return client[self.DATABASE]
 
-    def username_print(self):
+    def get_id_number(self):
+        db = self.get_db()
         embed()
-        print(self.username)
-
-    @classmethod
-    def create(cls, *args, **kwargs):
-        try:
-            return cls(*args, **kwargs)
-        except Exception as e:
-            return False
