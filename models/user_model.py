@@ -1,14 +1,18 @@
 from models.app_model import AppModel
+from IPython import embed
 
 
 class User(AppModel):
 
-    collection = 'users'
+    COLLECTION = 'users'
 
-    def __init__(self, username, password):
+    def __init__(
+        self,
+        username,
+        password,
+        id=None
+    ):
+
+        self.id = id
         self.username = username
         self.password = password
-
-    def save(self):
-        id = self.get_id_number()
-        db = self.get_db

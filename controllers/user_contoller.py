@@ -14,9 +14,8 @@ class UserController(AppController):
         return "User#Index"
 
     def create(self):
-        user = User('test', 'password')
-        user.save()
-        return "User#Create"
+        user = User('test1', 'password').save()
+        return user['id']
 
     def show(self):
         return "User#Show"
