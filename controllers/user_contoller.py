@@ -9,8 +9,8 @@ class UserController(AppController):
         self.data = data
 
     def index(self):
-        # users = User.all()
-        # embed()
+        users = User.all()
+        embed()
         return "User#Index"
 
     def create(self):

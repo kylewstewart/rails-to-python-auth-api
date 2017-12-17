@@ -5,9 +5,10 @@ from IPython import embed
 
 class AppModel():
 
-    HOST = db_configs['host']
-    PORT = db_configs['port']
-    DATABASE = db_configs['database']
+    DB = MongoClient(
+        db_configs['host'],
+        db_configs['port']
+    )[db_configs['database']]
 
     @classmethod
     def all(cls):
@@ -19,15 +20,6 @@ class AppModel():
             documents.append(document)
         return documents
 
-    def __init__(self):
-        self.host = db_configs['host']
-        self.port = db_configs['port']
-        self.database = db_configs['database']
-
-    def get_db(self):
-        client = MongoClient(self.HOST, self.PORT)
-        return client[self.DATABASE]
-
     def get_id_number(self):
-        db = self.get_db()
         embed()
+        id = self.DB.counters.distinct(f"{self.collection}")
