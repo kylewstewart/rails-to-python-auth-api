@@ -12,7 +12,6 @@ class User(AppModel):
         password,
         id=None
     ):
-
-        self.id = id
         self.username = username
         self.password = password
+        self.id = id

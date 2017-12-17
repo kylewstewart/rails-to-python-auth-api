@@ -14,8 +14,14 @@ class UserController(AppController):
         return "User#Index"
 
     def create(self):
-        user = User('test1', 'password').save()
-        return user['id']
+        user = User('sally', 'password')
+        dup = user.find_one()
+        if dup is False:
+            response = user.save()
+        else:
+            response = dup
+        embed()
+        return response
 
     def show(self):
         return "User#Show"
