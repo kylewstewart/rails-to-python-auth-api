@@ -11,7 +11,6 @@ class AppModel():
     def all(cls):
         db = cls.DB
         collection = db[f"{cls.COLLECTION}"]
-
         return [doc for doc in collection.find()]
 
     @classmethod
@@ -24,6 +23,35 @@ class AppModel():
         else:
             return cls(**doc)
 
+    @classmethod
+    def update(cls, id, **data):
+        db = cls.DB
+        collection = db[f"{cls.COLLECTION}"]
+        result = collection.update_one({'id': id}, {'$set': data})
+        if result.acknowledged:
+            return cls.find_one_by_id(id)
+        else:
+            return None
+
+    @classmethod
+    def delete(cls, id):
+        db = cls.DB
+        collection = db[f"{cls.COLLECTION}"]
+        result = collection.delete_one({'id': id})
+        return result.acknowledged
+
+    def save(self):
+        db = self.DB
+        collection = db[f"{self.COLLECTION}"]
+        doc = {k: v for (k, v) in self.__dict__.items()}
+        doc['id'] = self.get_id_and_inc()
+        result = collection.insert_one(doc)
+        if result.acknowledged:
+            self.id = doc['id']
+            return doc
+        else:
+            return None
+
     def get_id_and_inc(self):
         # Collection name (COUNT) and increament value (1) are hardcoded
         db = self.DB
@@ -33,28 +61,7 @@ class AppModel():
             {"collection": f"{collection}"},
             {'$inc': {'id_count': 1}, '$set': {'done': True}}
         )
-
         return counter['id_count']
-
-    def save(self):
-        db = self.DB
-        collection = db[f"{self.COLLECTION}"]
-        doc = {k: v for (k, v) in self.__dict__.items()}
-        doc['id'] = self.get_id_and_inc()
-        collection.insert_one(doc)
-        self.id = doc['id']
-
-        return doc
-
-    def find(self):
-        db = self.DB
-        collection = db[f"{self.COLLECTION}"]
-        if self.id is None:
-            doc = {k: v for (k, v) in self.__dict__.items() if k != "id"}
-        else:
-            doc = {k: v for (k, v) in self.__dict__.items()}
-
-        return [document for document in collection.find(doc)]
 
     def find_one(self):
         db = self.DB
@@ -64,3 +71,14 @@ class AppModel():
             return collection.find_one(doc)
         else:
             return collection.find_one({'id': self.id})
+
+    # def find(self):
+    #     db = self.DB
+    #     collection = db[f"{self.COLLECTION}"]
+    #     if self.id is None:
+    #         doc = {k: v for (k, v) in self.__dict__.items() if k != "id"}
+    #     else:
+    #         doc = {k: v for (k, v) in self.__dict__.items()}
+    #
+    #     return [document for document in collection.find(doc)]
+    #

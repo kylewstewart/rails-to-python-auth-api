@@ -1,5 +1,4 @@
 from config import serailize
-from IPython import embed
 
 
 class AppController():

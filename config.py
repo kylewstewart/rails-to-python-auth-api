@@ -17,6 +17,17 @@ serailize = {
         'show': (
             'id',
             'username'
+        ),
+        'update': (
+            'id',
+            'username'
         )
     }
+}
+
+schema = {
+    'users': (
+        'username',
+        'password'
+    )
 }

@@ -6,7 +6,7 @@ class User(AppModel):
 
     COLLECTION = 'users'
 
-    def __init__(self, id, **kwargs):
+    def __init__(self, id, username, password, **kwargs):
         self.id = id
-        self.username = kwargs.pop('username', None)
-        self.password = kwargs.pop('password', None)
+        self.username = username
+        self.password = password

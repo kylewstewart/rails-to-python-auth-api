@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from http_method_override import HTTPMethodOverride
 from dispatchers import controllers
+from IPython import embed
+
 
 app = Flask(__name__)
 app.wsgi_app = HTTPMethodOverride(app.wsgi_app)
@@ -24,7 +26,7 @@ def route(**params):
             request.get_json(silent=True)
         )
     except Exception as e:
-        return ('Bad Path', '404')
+        return ("Bad Path", 404)
 
     method = getattr(controller, request.method.lower())
     return jsonify(method())

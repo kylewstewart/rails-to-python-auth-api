@@ -25,13 +25,13 @@ class UserController(AppController):
 
     def show(self):
         user = User.find_one_by_id(self.id)
-        if user is None:
-            return None
-        else:
-            return self.serailizer(user.__dict__, 'show')
+        return self.serailizer(user.__dict__, 'show')
 
     def update(self):
-        return "User#Update"
+        id, data = self.id, self.data
+        user = User.update(id, **data)
+        return self.serailizer(user.__dict__, 'update')
 
     def destroy(self):
-        return "User#Destroy"
+        id = self.id
+        return User.delete(id)
