@@ -4,27 +4,31 @@ from IPython import embed
 
 
 class UserController(AppController):
+    COLLECTION = 'users'
+
     def __init__(self, id, data):
         self.id = id
         self.data = data
 
     def index(self):
         users = User.all()
-        embed()
-        return "User#Index"
+        return self.serailizer(users, 'index')
 
     def create(self):
-        user = User('sally', 'password')
+        id, data = self.id, self.data
+        user = User(id, **data)
         dup = user.find_one()
-        if dup is False:
-            response = user.save()
+        if dup is None:
+            return self.serailizer(user.save(), 'create')
         else:
-            response = dup
-        embed()
-        return response
+            return self.serailizer(dup, 'create')
 
     def show(self):
-        return "User#Show"
+        user = User.find_one_by_id(self.id)
+        if user is None:
+            return None
+        else:
+            return self.serailizer(user.__dict__, 'show')
 
     def update(self):
         return "User#Update"
