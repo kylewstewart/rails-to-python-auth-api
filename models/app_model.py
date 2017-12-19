@@ -70,14 +70,3 @@ class AppModel():
             return collection.find_one(doc)
         else:
             return collection.find_one({'id': self.id})
-
-    # def find(self):
-    #     db = self.DB
-    #     collection = db[f"{self.COLLECTION}"]
-    #     if self.id is None:
-    #         doc = {k: v for (k, v) in self.__dict__.items() if k != "id"}
-    #     else:
-    #         doc = {k: v for (k, v) in self.__dict__.items()}
-    #
-    #     return [document for document in collection.find(doc)]
-    #
