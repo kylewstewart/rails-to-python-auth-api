@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from http_method_override import HTTPMethodOverride
 from dispatchers import controllers
-from IPython import embed
 
 
 app = Flask(__name__)

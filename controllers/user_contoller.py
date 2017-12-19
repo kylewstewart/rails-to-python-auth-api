@@ -1,6 +1,5 @@
 from controllers.app_controller import AppController
 from models import User
-from IPython import embed
 
 
 class UserController(AppController):

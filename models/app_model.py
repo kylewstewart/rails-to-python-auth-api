@@ -1,6 +1,5 @@
 from pymongo import MongoClient
 from config import database
-from IPython import embed
 
 
 class AppModel():
