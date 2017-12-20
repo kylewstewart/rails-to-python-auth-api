@@ -1,10 +1,4 @@
-database = {
-    'host': 'localhost',
-    'port': 27017,
-    'db_name': 'dtx-flask-exch-server',
-}
-
-serailize = {
+serailizer = {
     'users': {
         'index': (
             'id',
@@ -23,11 +17,4 @@ serailize = {
             'username'
         )
     }
-}
-
-schema = {
-    'users': (
-        'username',
-        'password'
-    )
 }

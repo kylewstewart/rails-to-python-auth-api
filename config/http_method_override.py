@@ -1,4 +1,3 @@
-
 class HTTPMethodOverride(object):
     allowed_methods = frozenset([
         'GET',

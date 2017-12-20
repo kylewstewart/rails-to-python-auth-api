@@ -1,11 +1,15 @@
 from flask import Flask, request, jsonify
-from http_method_override import HTTPMethodOverride
-from dispatchers import controllers
+from config import HTTPMethodOverride
+import controllers
 
 
 app = Flask(__name__)
 app.wsgi_app = HTTPMethodOverride(app.wsgi_app)
 version = "api/v1"
+
+controllers = {
+    'users': controllers.UsersController
+}
 
 
 @app.route(

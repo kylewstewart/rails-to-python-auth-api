@@ -1,5 +1,4 @@
 from models.app_model import AppModel
-from IPython import embed
 
 
 class User(AppModel):
