@@ -1,13 +1,15 @@
 from flask import Flask, request
+from flask_cors import CORS
 from libraries import HTTPMethodOverride, authorize
 import controllers
 
 app = Flask(__name__)
+CORS(app)
 app.wsgi_app = HTTPMethodOverride(app.wsgi_app)
 version = "api/v1"
 
 controllers = {
-    'users': controllers.UsersController,
+    'user': controllers.UsersController,
     'auth': controllers.AuthController
 }
 
