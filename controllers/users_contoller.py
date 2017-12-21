@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, make_response, jsonify
 from controllers.app_controller import AppController
 from models import User
 import bcrypt
@@ -40,4 +40,5 @@ class UsersController(AppController):
 
     def destroy(self):
         id = self.id
-        return User.delete(id)
+        resp = User.delete(id)
+        return make_response(jsonify(resp), 200)

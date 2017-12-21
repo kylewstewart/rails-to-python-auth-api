@@ -1,9 +1,8 @@
-from flask import request
+from flask import request, make_response, jsonify
 from controllers.app_controller import AppController
 from models import User
 import bcrypt
 import jwt
-from IPython import embed
 
 SECRET = '12345'
 ALGO = 'HS256'
@@ -27,7 +26,8 @@ class AuthController(AppController):
             return self.serailize({'jwt': bytes.decode(token),
                                    **user.__dict__}, 'create')
         else:
-            return ({'error': 'Username or password is incorrect'}, 404)
+            resp = {'error': 'Username or password is incorrect'}
+            return make_response(jsonify(resp), 404)
 
     def show(self):
         pass

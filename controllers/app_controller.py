@@ -1,3 +1,4 @@
+from flask import make_response, jsonify
 from config import serailizer
 
 
@@ -22,9 +23,10 @@ class AppController():
 
     def serailize(self, data, set):
         if type(data) is list:
-            return [self.filter_dict(dict, set) for dict in data]
+            resp = [self.filter_dict(dict, set) for dict in data]
         else:
-            return self.filter_dict(data, set)
+            resp = self.filter_dict(data, set)
+        return make_response(jsonify(resp), 200)
 
     def filter_dict(self, dict, set):
         allowed = serailizer[self.COLLECTION][set]

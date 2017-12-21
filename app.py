@@ -1,7 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from libraries import HTTPMethodOverride, authorize
 import controllers
-from IPython import embed
 
 app = Flask(__name__)
 app.wsgi_app = HTTPMethodOverride(app.wsgi_app)
@@ -33,7 +32,7 @@ def route(**params):
     else:
         controller = controllers['auth']()
         method = getattr(controller, 'create')
-    return jsonify(method())
+    return method()
 
 
 if __name__ == '__main__':
