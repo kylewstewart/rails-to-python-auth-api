@@ -23,6 +23,16 @@ class AppModel():
             return cls(**doc)
 
     @classmethod
+    def find_one_by_username(cls, username):
+        db = cls.DB
+        collection = db[f"{cls.COLLECTION}"]
+        doc = collection.find_one({"username": username})
+        if doc is None:
+            return None
+        else:
+            return cls(**doc)
+
+    @classmethod
     def update(cls, id, **data):
         db = cls.DB
         collection = db[f"{cls.COLLECTION}"]

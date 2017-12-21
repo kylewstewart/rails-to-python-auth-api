@@ -16,5 +16,12 @@ serailizer = {
             'id',
             'username'
         )
+    },
+    'auth': {
+        'create': (
+            'id',
+            'username',
+            'jwt'
+        )
     }
 }

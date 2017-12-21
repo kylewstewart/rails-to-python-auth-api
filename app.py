@@ -1,14 +1,15 @@
 from flask import Flask, request, jsonify
-from config import HTTPMethodOverride
+from libraries import HTTPMethodOverride, authorize
 import controllers
-
+from IPython import embed
 
 app = Flask(__name__)
 app.wsgi_app = HTTPMethodOverride(app.wsgi_app)
 version = "api/v1"
 
 controllers = {
-    'users': controllers.UsersController
+    'users': controllers.UsersController,
+    'auth': controllers.AuthController
 }
 
 
@@ -21,17 +22,17 @@ controllers = {
     f"/{version}/<path>/<int:id>",
     methods=['GET', 'PUT', 'PATCH', 'DELETE']
 )
+@authorize
 def route(**params):
-
-    try:
-        controller = controllers[params['path']](
-            params.get('id'),
-            request.get_json(silent=True)
-        )
-    except Exception as e:
-        return ("Bad Path", 404)
-
-    method = getattr(controller, request.method.lower())
+    if request.authorized is True:
+        try:
+            controller = controllers[params['path']]()
+        except Exception as e:
+            return ("Bad Path", 404)
+        method = getattr(controller, request.method.lower())
+    else:
+        controller = controllers['auth']()
+        method = getattr(controller, 'create')
     return jsonify(method())
 
 

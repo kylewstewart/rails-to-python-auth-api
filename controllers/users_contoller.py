@@ -1,21 +1,24 @@
+from flask import request
 from controllers.app_controller import AppController
 from models import User
+import bcrypt
 
 
 class UsersController(AppController):
     COLLECTION = 'users'
 
-    def __init__(self, id, data):
-        self.id = id
-        self.data = data
+    def __init__(self):
+        self.id = request.view_args.get('id')
+        self.data = request.get_json(silent=True)
 
     def index(self):
         users = User.all()
         return self.serailize(users, 'index')
 
     def create(self):
-        id, data = self.id, self.data
-        user = User(id, **data)
+        password = bytes(self.data['password'], encoding="utf-8")
+        password_digest = bcrypt.hashpw(password, bcrypt.gensalt())
+        user = User(self.id, self.data['username'], password_digest)
         dup = user.find_one()
         if dup is None:
             return self.serailize(user.save(), 'create')
@@ -27,8 +30,12 @@ class UsersController(AppController):
         return self.serailize(user.__dict__, 'show')
 
     def update(self):
-        id, data = self.id, self.data
-        user = User.update(id, **data)
+        data = self.data
+        if data['password'] is not None:
+            password = bytes(data['password'], encoding="utf-8")
+            data['password_digest'] = bcrypt.hashpw(password, bcrypt.gensalt())
+            del data['password']
+        user = User.update(self.id, **data)
         return self.serailize(user.__dict__, 'update')
 
     def destroy(self):
