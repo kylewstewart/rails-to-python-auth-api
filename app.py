@@ -1,40 +1,51 @@
-from flask import Flask, request
+from flask import Flask, request, make_response, jsonify
 from flask_cors import CORS
-from libraries import HTTPMethodOverride, authorize
+from libraries import HTTPMethodOverride, authorize, cors
 import controllers
+from IPython import embed
 
 app = Flask(__name__)
-CORS(app)
 app.wsgi_app = HTTPMethodOverride(app.wsgi_app)
 version = "api/v1"
 
 controllers = {
     'user': controllers.UsersController,
-    'auth': controllers.AuthController
+    'auth': controllers.AuthController,
 }
 
 
 @app.route(
     f"/{version}/<path>",
     defaults={'id': None},
-    methods=['GET', 'POST']
+    methods=['GET', 'POST', 'OPTIONS']
 )
 @app.route(
     f"/{version}/<path>/<int:id>",
-    methods=['GET', 'PUT', 'PATCH', 'DELETE']
+    methods=['GET', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
 )
 @authorize
 def route(**params):
-    if request.authorized is True:
-        try:
-            controller = controllers[params['path']]()
-        except Exception as e:
-            return ("Bad Path", 404)
-        method = getattr(controller, request.method.lower())
+
+    if request.method == 'OPTIONS':
+        data = ""
+        code = 200
     else:
-        controller = controllers['auth']()
-        method = getattr(controller, 'create')
-    return method()
+        if request.authorized is False:
+            controller = controllers['auth']()
+            method = getattr(controller, 'create')
+            data, code = method()
+        else:
+            try:
+                controller = controllers[params['path']]()
+                method = getattr(controller, request.method.lower())
+                data, code = method()
+            except Exception as e:
+                data = {'error': "Bad Path"}
+                code = 404
+
+    resp = make_response(jsonify(data), code)
+    resp = cors(resp)
+    return resp
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-from flask import request, make_response, jsonify
+from flask import request
 from controllers.app_controller import AppController
 from models import User
 import bcrypt
@@ -12,10 +12,12 @@ class AuthController(AppController):
     COLLECTION = 'auth'
 
     def __init__(self):
-        pass
+        self.id = request.view_args.get('id')
+        self.data = request.get_json(silent=True)
 
     def index(self):
-        pass
+        user = User.find_one_by_id(request.id)
+        return self.serailize(user.__dict__, 'index')
 
     def create(self):
         data = request.get_json(silent=True)
@@ -26,8 +28,7 @@ class AuthController(AppController):
             return self.serailize({'jwt': bytes.decode(token),
                                    **user.__dict__}, 'create')
         else:
-            resp = {'error': 'Username or password is incorrect'}
-            return make_response(jsonify(resp), 404)
+            return ({'error': 'Username or password is incorrect'}, 404)
 
     def show(self):
         pass

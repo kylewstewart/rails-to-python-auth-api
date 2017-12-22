@@ -18,6 +18,10 @@ serailizer = {
         )
     },
     'auth': {
+        'index': (
+            'id',
+            'username',
+        ),
         'create': (
             'id',
             'username',
