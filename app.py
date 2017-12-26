@@ -1,14 +1,13 @@
 from flask import Flask, request, make_response, jsonify
-from flask_cors import CORS
-from libraries import HTTPMethodOverride, authorize, cors
+from libraries import HTTPMethodOverride, is_authorized, cors
+from config import authorize
 import controllers
-from IPython import embed
 
 app = Flask(__name__)
 app.wsgi_app = HTTPMethodOverride(app.wsgi_app)
 version = "api/v1"
 
-controllers = {
+routes = {
     'user': controllers.UsersController,
     'auth': controllers.AuthController,
 }
@@ -23,25 +22,22 @@ controllers = {
     f"/{version}/<path>/<int:id>",
     methods=['GET', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
 )
-@authorize
 def route(**params):
+    path = params['path']
+    method = request.method
 
-    if request.method == 'OPTIONS':
-        data = ""
-        code = 200
-    else:
-        if request.authorized is False:
-            controller = controllers['auth']()
-            method = getattr(controller, 'create')
-            data, code = method()
+    if method == 'OPTIONS':
+        data, code = ('', 200)
+    elif method in authorize[path]:
+        if is_authorized():
+            data, code = getattr(routes[path](), method.lower())()
         else:
-            try:
-                controller = controllers[params['path']]()
-                method = getattr(controller, request.method.lower())
-                data, code = method()
-            except Exception as e:
-                data = {'error': "Bad Path"}
-                code = 404
+            data, code = ({'error': 'Authoization Failed'}, 401)
+    else:
+        try:
+            data, code = getattr(routes[path](), method.lower())()
+        except Exception as e:
+            data, code = ({'error': "Bad Path"}, 404)
 
     resp = make_response(jsonify(data), code)
     resp = cors(resp)

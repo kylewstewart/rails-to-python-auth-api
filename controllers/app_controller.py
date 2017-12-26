@@ -1,5 +1,4 @@
-from config import serailizer
-from flask import jsonify
+from config.serailizer_config import serailizer
 
 
 class AppController():

@@ -31,10 +31,10 @@ class AuthController(AppController):
             return ({'error': 'Username or password is incorrect'}, 404)
 
     def show(self):
-        pass
+        return ({'error': 'Bad Path'}, 404)
 
     def update(self):
-        pass
+        return ({'error': 'Bad Path'}, 404)
 
     def destroy(self):
-        pass
+        return ({'error': 'Bad Path'}, 404)
